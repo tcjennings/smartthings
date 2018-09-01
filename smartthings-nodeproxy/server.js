@@ -18,6 +18,7 @@
 ////////////////////
 var express = require('express');
 var http = require('http');
+var cors = require('cors');
 var app = express();
 var nconf = require('nconf');
 nconf.file({ file: './config.json' });
@@ -32,6 +33,11 @@ var logger = function(str) {
 app.get('/', function (req, res) {
   res.status(200).json({ status: 'SmartThings Node Proxy running' });
 });
+
+/**
+  * CORS Middleware
+  */
+app.use(cors());
 
 /**
  * Enforce basic authentication route; verify that HTTP.HEADERS['stnp-auth'] == CONFIG['authCode']
