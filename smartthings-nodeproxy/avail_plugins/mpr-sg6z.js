@@ -152,6 +152,7 @@ mpr6z.init();
 function Mpr6z() {
   var self = this;
   var device = null;
+  var parser = null;
   var buffer = new Array();
   var serialPorts = new Array();
   var controllerId = 0x00;
@@ -167,15 +168,15 @@ function Mpr6z() {
         return;
     }
 
-    if (device && device.isOpen()) { return };
+    if (device && device.isOpen) { return };
 
     device = new serialport(nconf.get('mpr6z:serialPort'),
-                            { baudrate: nconf.get('mpr6z:baudRate'),
-                              parser: serialport.parsers.readline('\n'),
-                              autoOpen: false
-                            });
+      { baudRate: nconf.get('mpr6z:baudRate'),
+        autoOpen: false
+      });
 
-    device.on('data', function(data) {
+    parser = device.pipe(new serialport.parsers.Readline());
+    parser.on('data', function(data) {
 		  read(data);
     });
 
@@ -207,7 +208,7 @@ function Mpr6z() {
    * write
    */
   function write(cmd) {
-    if (!device || !device.isOpen()) {
+    if (!device || !device.isOpen) {
       logger('MPR6Z not connected.');
       return;
     }
