@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 cd /stnp
 
@@ -8,4 +8,5 @@ for plugin in $ENABLED_PLUGINS; do
  fi
 done
 
-$NPM run start
+npm start
+
